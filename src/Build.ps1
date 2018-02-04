@@ -1,3 +1,3 @@
-Docker build -t kerwinc/rabbitmq .
+Docker build -t kerwinc/rabbitmq-windows .
 
 Docker system prune -f
