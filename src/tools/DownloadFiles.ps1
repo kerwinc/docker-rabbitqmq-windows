@@ -18,13 +18,18 @@ function DownloadFile($url, $targetFile)
     $count = $responseStream.Read($buffer,0,$buffer.length) 
     $downloadedBytes = $count 
     $totalLengthMB = [System.Math]::Floor($totalLength / 1024)
+    [int]$lastProgressPercent = -1
     while ($count -gt 0) 
     { 
         $downloadedMB = [System.Math]::Floor($downloadedBytes/1024/1024)
         $percentageComplete = $([System.Math]::Round([System.Math]::Floor($downloadedBytes/1024) / $totalLength * 100,2))
         Write-Progress -Activity "Downloading File..." -Status "$percentageComplete% ($($downloadedMB)MB of $($totalLengthMB)MB) complete" -PercentComplete $percentageComplete
-        # [System.Console]::CursorLeft = 0
-        # [System.Console]::Write("Downloaded {0}K of {1}K", [System.Math]::Floor($downloadedBytes/1024), $totalLength) 
+        
+        if ($($percentageComplete % 5) -eq 0 -and $([System.Math]::Round($percentageComplete,0)) -gt $lastProgressPercent) {
+            Write-Output "$percentageComplete% ($($downloadedMB)MB of $($totalLengthMB)MB) complete"
+            $lastProgressPercent = $([System.Math]::Round($percentageComplete,0))
+        }
+
         $targetStream.Write($buffer, 0, $count) 
         $count = $responseStream.Read($buffer,0,$buffer.length) 
         $downloadedBytes = $downloadedBytes + $count 

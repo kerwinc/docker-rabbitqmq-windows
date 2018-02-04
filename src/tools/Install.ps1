@@ -11,12 +11,6 @@ while ($erlangInstallProcess.HasExited -eq $false) {
 Write-Host "Erlang home set to: [$($env:ERLANG_HOME)]"
 Write-Host "Erlang service manager path set to: [$($env:ERLANG_SERVICE_MANAGER_PATH)]"
 
-Write-Host "Downloading Rabbit..."
-$url = "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.3/rabbitmq-server-windows-3.7.3.zip"
-$destination = "c:\tools\rabbitmq-server-windows-3.7.3.zip"
-$client = new-object System.Net.WebClient
-$client.DownloadFile($url,$destination)
-
 Write-Host "Installing Rabbit..."
 Expand-Archive C:\tools\rabbitmq-server-windows-3.7.3.zip -DestinationPath "C:\Program Files\RabbitMQ Server"
 
